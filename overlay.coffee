@@ -2,10 +2,10 @@
 Overlay - Coffeescript wrapper for jQuery UI Dialog
 
 From some fine folks at Turing.
-Ali Aslam 		[https://github.com/alibilalaslam]
-Lorin Tackett	[https://github.com/ltackett]
-Julian Coutu	[https://github.com/jcoutu]
-Stephen Judkins	[https://github.com/stephenjudkins]
+Ali Aslam         [https://github.com/alibilalaslam]
+Lorin Tackett     [https://github.com/ltackett]
+Julian Coutu      [https://github.com/jcoutu]
+Stephen Judkins   [https://github.com/stephenjudkins]
 ###
 
 @Overlay = {
