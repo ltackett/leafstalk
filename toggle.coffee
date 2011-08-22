@@ -10,8 +10,8 @@ $(".toggle").click (e) ->
   e.preventDefault()
 
   source = $(this)
-  target = $(this).attr "rel"
-  $target = $("##{target}")
+  target = $(this).attr "href"
+  $target = $("#{target}")
   wrapper = $(this).closest("#wrapper")
 
   source.css("z-index", "90").addClass("active")
