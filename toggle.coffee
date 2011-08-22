@@ -1,5 +1,5 @@
 ###
-Toggle - General-porpose click-to-toggle
+Toggle - General-purpose click-to-toggle
 
 From some fine folks at Turing.
 Lorin Tackett     [https://github.com/ltackett]
