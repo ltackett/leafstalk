@@ -1,22 +1,37 @@
-###
+### ========================================================================= #
 Overlay - Coffeescript wrapper for jQuery UI Dialog
+https://github.com/ltackett/frontend-utilitybelt
 
 From some fine folks at Turing.
 Ali Aslam         [https://github.com/alibilalaslam]
 Lorin Tackett     [https://github.com/ltackett]
 Julian Coutu      [https://github.com/jcoutu]
 Stephen Judkins   [https://github.com/stephenjudkins]
-###
+
+Required libraries:
+jQuery UI:    http://jqueryui.com/
+jQuery Form:  http://jquery.malsup.com/form/
+# ========================================================================= ###
 
 @Overlay = {
   init: ->
-    @defaultContainer = $("#overlay")
+    fullPageOverlayDiv = $(".full-page-overlay")
+    if fullPageOverlayDiv.length > 0
+      @container = fullPageOverlayDiv
+      @isFullPage = true
+      @container.addClass("overlay")
+    else
+      @defaultContainer = $("#overlay")
+      if @defaultContainer.length == 0
+        $("body").append(@container = @defaultContainer = $("<div id='overlay></div>"))
 
   create: (options) ->
     self = @
 
     @container = options.container or @defaultContainer
     delete options.container
+
+    @container.addClass("overlay")
 
     content = options.content
     delete options.content
@@ -60,20 +75,20 @@ Stephen Judkins   [https://github.com/stephenjudkins]
     }
     @container.html(content).dialog $.extend({}, defaults, options)
 
-  replace_content: (content) ->
+  replaceContent: (content) ->
     @container.find("select").selectBox("destroy")
     @container.html(content)
     @container.find("select").selectBox()
 
     @container.dialog("option", "position", "center") unless $("html").hasClass "embedded"
     @container.trigger "dialogcontentreplaced"
-    
+
 
   remove: () ->
     @container?.dialog "close"
-  
+
   isOpen: () ->
-    @container?.dialog("isOpen") is true
+    @isFullPage or @container?.dialog("isOpen") is true
 }
 
 $ ->
@@ -81,18 +96,20 @@ $ ->
 
   $("a.cancel").live "click", (e) ->
     e.preventDefault()
-    if(Overlay.isOpen())
-      Overlay.remove()
+    if embeddedLink = $(@).attr("data_device_embedded")
+      window.location = embeddedLink
     else
-      history.go(-1)
+      if(Overlay.isOpen())
+        Overlay.remove()
+      else
+        history.go(-1)
 
   $("a[rel*=overlay]").live "click", (e) ->
     e.preventDefault()
-    $("#notice").html ""
 
     link = $ @
-    if link.attr "data-container"
-      container = $ "<div id='#{link.attr('data-container')}' />"
+    if containerId = link.attr "data-container"
+      container = if $("##{containerId}").length then $("##{containerId}") else $("<div id='#{containerId}' />")
     else
       container = $ link.attr("rel")
 
@@ -104,21 +121,41 @@ $ ->
         noCloseButton: !!link.attr("data-overlay-no-close-button")
       }
       $("#loading-screen").show()
-  
+
       $.ajax
         url: link.attr("href")
         type: link.attr("data-overlay-http-method") or "GET"
         success: (response) ->
-          Overlay.replace_content(response)
+          Overlay.replaceContent(response)
           $("#loading-screen").hide()
 
   if document.location.hash.indexOf("#overlay-") == 0
     name = document.location.hash.split("#overlay-")[1]
     $("a[rel*=overlay]").each ->
       $(@).click() if $(@).attr('data-container') == name
-        
+
 
   $("#overlay form[rel='#close-overlay-on-submit']").live "submit", (e) ->
     e.preventDefault()
-    $(this).ajaxSubmit({success: -> Overlay.remove()})
+    $(this).ajaxSubmit(success: -> Overlay.remove())
 
+  $("[rel=open-in-overlay]").live "click", (e) ->
+    e.preventDefault()
+    $.get $(@).attr("href"), (response) ->
+      Overlay.replaceContent response
+
+  $(".overlay form").live
+    submit: (event) ->
+      event.preventDefault()
+      form = $(@)
+      form.ajaxSubmit
+        success: (response, statusText, xhr, $form) -> form.trigger("overlaySuccess", response)
+        error: (response) -> form.trigger("overlayError", response)
+    overlaySuccess: (event, response) ->
+      if Overlay.isFullPage
+        Overlay.replaceContent(response)
+      else
+        Overlay.remove()
+    overlayError: (event, response) ->
+      $("#error-explanation").remove()
+      $(@).prepend(response.responseText)
