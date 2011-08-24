@@ -62,13 +62,9 @@ jQuery Form:  http://jquery.malsup.com/form/
         # prevent document scrollbars from being disabled by overlay
         window.setTimeout((-> $(document).unbind('mousedown.dialog-overlay').unbind('mouseup.dialog-overlay')), 100)
 
-        self.container.find("select").selectBox()
-
         onOpen(event, ui) if onOpen
 
       close: (event, ui) ->
-        self.container.find("select").selectBox("destroy")
-
         onClose(event, ui) if onClose
 
     }
