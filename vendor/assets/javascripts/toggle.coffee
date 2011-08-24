@@ -27,10 +27,29 @@ $.fn.lsToggle = (options) ->
       e.preventDefault()
       
       source = $(@)
-      if source.attr("rel") then  target = source.attr "rel"
-      else                        target = source.attr "href"
-      if (options.target instanceof jQuery) then  $target = options.target
-      else                                        $target = $("#{target}")
+
+      # rel attribute is a selector
+      if source.attr("rel")
+        targetSelector = source.attr("rel")
+
+        # rev attribute is selector for parent elements, and rel attribute
+        # becomes a selector for child elements of that parent
+        if source.attr("rev")
+          targetSelector = source.closest(source.attr("rev")).find(source.attr("rel"))
+
+      # otherwise, just use the ID of the page anchor.
+      else
+        targetSelector = source.attr "href"
+      
+      # If we've passed in an optional target, and that target is a jQuery
+      # object, use that as $target, otherwise use the options.target we built.
+      if options.target instanceof jQuery
+        $target = options.target
+      else
+        if targetSelector instanceof jQuery
+          $target = $(targetSelector)
+        else
+          $target = $("#{targetSelector}")
 
       source.css("z-index", options.sourceZ).addClass("active")
       $target.toggle(options.speed).css("z-index", options.targetZ)
