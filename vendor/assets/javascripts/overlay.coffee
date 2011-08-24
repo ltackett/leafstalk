@@ -1,5 +1,5 @@
 ### ========================================================================= #
-Overlay - Coffeescript wrapper for jQuery UI Dialog
+lsOverlay - Coffeescript wrapper for jQuery UI Dialog
 https://github.com/ltackett/frontend-utilitybelt
 
 From some fine folks at Turing.
@@ -13,7 +13,7 @@ jQuery UI:    http://jqueryui.com/
 jQuery Form:  http://jquery.malsup.com/form/
 # ========================================================================= ###
 
-@Overlay = {
+@lsOverlay = {
   init: ->
     fullPageOverlayDiv = $(".full-page-overlay")
     if fullPageOverlayDiv.length > 0
@@ -92,15 +92,15 @@ jQuery Form:  http://jquery.malsup.com/form/
 }
 
 $ ->
-  Overlay.init()
+  lsOverlay.init()
 
   $("a.cancel").live "click", (e) ->
     e.preventDefault()
     if embeddedLink = $(@).attr("data_device_embedded")
       window.location = embeddedLink
     else
-      if(Overlay.isOpen())
-        Overlay.remove()
+      if(lsOverlay.isOpen())
+        lsOverlay.remove()
       else
         history.go(-1)
 
@@ -114,7 +114,7 @@ $ ->
       container = $ link.attr("rel")
 
     if container.length > 0
-      Overlay.create {
+      lsOverlay.create {
         title: link.text()
         content: $("#loading-screen")
         container: container
@@ -126,7 +126,7 @@ $ ->
         url: link.attr("href")
         type: link.attr("data-overlay-http-method") or "GET"
         success: (response) ->
-          Overlay.replaceContent(response)
+          lsOverlay.replaceContent(response)
           $("#loading-screen").hide()
 
   if document.location.hash.indexOf("#overlay-") == 0
@@ -137,12 +137,12 @@ $ ->
 
   $("#overlay form[rel='#close-overlay-on-submit']").live "submit", (e) ->
     e.preventDefault()
-    $(this).ajaxSubmit(success: -> Overlay.remove())
+    $(this).ajaxSubmit(success: -> lsOverlay.remove())
 
   $("[rel=open-in-overlay]").live "click", (e) ->
     e.preventDefault()
     $.get $(@).attr("href"), (response) ->
-      Overlay.replaceContent response
+      lsOverlay.replaceContent response
 
   $(".overlay form").live
     submit: (event) ->
@@ -152,10 +152,10 @@ $ ->
         success: (response, statusText, xhr, $form) -> form.trigger("overlaySuccess", response)
         error: (response) -> form.trigger("overlayError", response)
     overlaySuccess: (event, response) ->
-      if Overlay.isFullPage
-        Overlay.replaceContent(response)
+      if lsOverlay.isFullPage
+        lsOverlay.replaceContent(response)
       else
-        Overlay.remove()
+        lsOverlay.remove()
     overlayError: (event, response) ->
       $("#error-explanation").remove()
       $(@).prepend(response.responseText)

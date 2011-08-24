@@ -11,7 +11,7 @@ Ali Aslam         [https://github.com/alibilalaslam]
 in an anonymous function, so this is safe. ###
 $ = jQuery
 
-$.fn.ubToggle = (options) ->
+$.fn.lsToggle = (options) ->
   
   defaults =
     speed:        "fast"
