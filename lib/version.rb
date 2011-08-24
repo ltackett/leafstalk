@@ -1,3 +1,3 @@
 module Leafstalk
-  VERSION = "0.0.6"
-end
+  VERSION = "0.0.7"
+end   
