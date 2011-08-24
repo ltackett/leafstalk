@@ -1,0 +1,25 @@
+/* ============================================================================
+ * Layout - Sass mixins for boxes and positioning
+ *
+ * From some fine folks at Turing.
+ * Lorin Tackett    [https://github.com/ltackett]
+ * ============================================================================ */
+
+@mixin dimensions($w,$h) {
+  width: $w;
+  height: $h;
+}
+
+@mixin absolute-fit {
+  position: absolute;
+  top:    0;
+  right:  0;
+  bottom: 0;
+  left:   0;
+}
+
+@mixin absolute-position($x: 0, $y: 0, $x-relative: left, $y-relative: top) {
+  position: absolute;
+  #{$x-relative}: $x;
+  #{$y-relative}: $y;
+}
