@@ -1,0 +1,13 @@
+PATH
+  remote: .
+  specs:
+    leafstalk (0.0.3)
+
+GEM
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  leafstalk!
