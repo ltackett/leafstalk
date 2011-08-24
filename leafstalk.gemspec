@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 require File.expand_path('../lib/version', __FILE__)
 
-require 'lib/engine'
-
 Gem::Specification.new do |s|
   s.name        = "leafstalk"
   s.version     = Leafstalk::VERSION
