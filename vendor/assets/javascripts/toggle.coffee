@@ -1,6 +1,5 @@
 ### ========================================================================= #
-Toggle - General-purpose click-to-toggle
-https://github.com/ltackett/frontend-utilitybelt
+lsToggle - General-purpose click-to-toggle
 
 From some fine folks at Turing.
 Lorin Tackett     [https://github.com/ltackett]

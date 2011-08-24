@@ -1,6 +1,5 @@
 ### ========================================================================= #
 lsOverlay - Coffeescript wrapper for jQuery UI Dialog
-https://github.com/ltackett/frontend-utilitybelt
 
 From some fine folks at Turing.
 Ali Aslam         [https://github.com/alibilalaslam]
